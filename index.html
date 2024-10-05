@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zen</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Style for the particles container */
+        #particles-js {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1; /* Place behind other content */
+            filter: blur(10px); /* Adjust the blur intensity here */
+        }
+
+        body {
+            background-color: #000;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            overflow: hidden; /* Prevent scrolling */
+        }
+
+        .main {
+            position: absolute; /* Change to absolute for better centering */
+            top: 50%; /* Center vertically */
+            left: 50%; /* Center horizontally */
+            transform: translate(-50%, -50%); /* Adjust position */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: auto; /* Adjusted to auto to prevent overflow */
+            color: #7000cd; /* Heading color */
+            text-shadow: 0 0 20px #7000cd, 0 0 30px #7000cd; /* Glowing text effect */
+            user-select: none; /* Prevent text selection */
+        }
+
+        h1 {
+            font-size: 4em;
+            margin: 0;
+            opacity: 0; /* Start hidden for fade-in */
+            animation: fadeIn 2s ease-in-out forwards; /* Fade in animation */
+        }
+
+        /* Animation keyframes for fading in */
+        @keyframes fadeIn {
+            to {
+                opacity: 1; /* Fully visible */
+            }
+        }
+
+        /* Style for the phrase */
+        .phrase {
+            font-size: 1.2em; /* Adjust size to make it smaller */
+            margin: 20px 0; /* Add margin above and below */
+            color: #ffffff; /* Text color */
+            text-shadow: 0 0 10px #ffffff; /* Glowing effect */
+        }
+
+        /* Style for the search bar */
+        .search-bar {
+            display: flex;
+            margin-top: 20px; /* Add some margin on top */
+        }
+
+        .search-input {
+            padding: 10px;
+            font-size: 1em; /* Font size for input */
+            border: 2px solid #7000cd; /* Border color */
+            border-radius: 5px; /* Rounded corners */
+            outline: none; /* Remove outline on focus */
+            color: #fff; /* Text color */
+            background-color: #333; /* Background color */
+            transition: border-color 0.3s; /* Transition effect */
+        }
+
+        .search-input::placeholder {
+            color: #aaa; /* Placeholder text color */
+        }
+
+        .search-input:focus {
+            border-color: #fff; /* Change border color on focus */
+        }
+
+        /* Navigation bar styles */
+        .nav {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0; /* Margin above the navbar */
+            z-index: 1; /* Ensure it's above the particles */
+        }
+
+        .nav a {
+            color: #fff;
+            text-decoration: none;
+            padding: 10px 20px;
+            margin: 0 10px; /* Space between tabs */
+            border: 2px solid transparent; /* Initial border */
+            border-radius: 5px; /* Rounded corners */
+            transition: border-color 0.3s, color 0.3s; /* Transition effect */
+        }
+
+        .nav a:hover {
+            border-color: #7000cd; /* Change border color on hover */
+            color: #7000cd; /* Change text color on hover */
+        }
+
+        /* Footer styles */
+        #footer {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            text-align: center;
+            z-index: 1;
+        }
+    </style>
+</head>
+<body>
+    <div id="particles-js"></div>
+    
+    <div class="main">
+        <h1>Zen v1.00</h1>
+        <div class="phrase" id="random-phrase"></div>
+        <div class="search-bar">
+            <form id="uv-form">
+                <input id="uv-search-engine" value="https://www.google.com/search?q=%s" type="hidden"/> 
+                <input id="uv-address" type="text" placeholder="Search..." class="search-input"/>
+            </form>
+        </div>
+        <div class="desc left-margin">
+            <p id="uv-error"></p>
+            <pre id="uv-error-code"></pre>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script src="search.js"></script> <!-- Include the new search.js file -->
+    <script async src="https://arc.io/widget.min.js#L1SfLEWE"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-VHVNHMYGN3"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-VHVNHMYGN3');
+
+        // Array of phrases
+        const phrases = [
+            "Ermmmm... what the sigma?",
+            "I love interstellar!",
+            "v1.00 is horrible!",
+            "I can't code.",
+            "Siege is a fun game!",
+            "I love proxies!",
+            "Too complicated.",
+            "R.I.P Project Unblocked.",
+            "Sick burn bro!"
+        ];
+
+        // Function to display a random phrase
+        function displayRandomPhrase() {
+            const randomIndex = Math.floor(Math.random() * phrases.length);
+            const randomPhrase = phrases[randomIndex];
+            document.getElementById('random-phrase').textContent = randomPhrase;
+        }
+
+        // Call the function to display a random phrase on page load
+        displayRandomPhrase();
+
+        // Initialize particles.js
+        particlesJS("particles-js", {
+            particles: {
+                number: {
+                    value: 30,
+                    density: {
+                        enable: true,
+                        value_area: 800
+                    }
+                },
+                color: {
+                    value: "#7000cd"
+                },
+                shape: {
+                    type: "circle",
+                    stroke: {
+                        width: 0,
+                        color: "#7000cd"
+                    },
+                },
+                opacity: {
+                    value: 0.5,
+                    random: false,
+                },
+                size: {
+                    value: 5,
+                    random: true,
+                },
+                line_linked: {
+                    enable: true,
+                    distance: 150,
+                    color: "#ffffff",
+                    opacity: 0.4,
+                    width: 1
+                },
+                move: {
+                    enable: true,
+                    speed: 6,
+                    direction: "none",
+                    out_mode: "out",
+                }
+            },
+            interactivity: {
+                detect_on: "canvas",
+                events: {
+                    onhover: {
+                        enable: true,
+                        mode: "repulse"
+                    },
+                    onclick: {
+                        enable: true,
+                        mode: "push"
+                    },
+                    resize: true
+                },
+                modes: {
+                    repulse: {
+                        distance: 200,
+                        duration: 0.4
+                    }
+                }
+            },
+            retina_detect: true
+        });
+    </script>
+    <script src="uv/uv.bundle.js" defer></script>
+    <script src="uv/uv.config.js" defer></script>
+    <script src="register-sw.js" defer></script>
+    <script src="index.js" defer></script>
+    <script src="error.js" defer></script>
+</body>
+</html>
+
+
